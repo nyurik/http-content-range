@@ -19,7 +19,7 @@ pub fn is_whitespace(c: u8) -> bool {
 
 #[inline]
 fn is_digit(c: u8) -> bool {
-    c >= b'0' && c <= b'9'
+    (b'0'..=b'9').contains(&c)
 }
 
 #[inline]
@@ -59,7 +59,7 @@ impl IterExt for Peekable<Iter<'_, u8>> {
             return None;
         }
         self.next()?; // consume separator
-        Some(self.skip_spaces()?)
+        self.skip_spaces()
     }
 
     /// Consume u64 value

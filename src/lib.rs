@@ -7,7 +7,7 @@ use crate::utils::{fail_if, is_whitespace, IterExt};
 
 mod utils;
 
-static PREFIX: &'static [u8] = b"bytes";
+static PREFIX: &[u8] = b"bytes";
 const PREFIX_LEN: usize = 5;
 
 /// HTTP Content-Range response header representation.
@@ -188,6 +188,8 @@ mod tests {
             T("bytes 1-/3", ContentRange::Unknown),
             T("bytes 1-2/", ContentRange::Unknown),
             T("bytes 1-2/a", ContentRange::Unknown),
+            T("bytes1-2/3", ContentRange::Unknown),
+            T("bytes=1-2/3", ContentRange::Unknown),
             T("bytes a-2/3", ContentRange::Unknown),
             T("bytes 1-a/3", ContentRange::Unknown),
             T("bytes 0x01-0x02/3", ContentRange::Unknown),
