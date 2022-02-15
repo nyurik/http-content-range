@@ -1,8 +1,3 @@
-# http-content-range
-
-Tiny Rust lib to decode Content-Range response headers.
-
-```rust
 extern crate http_content_range;
 
 use http_content_range::ContentRange;
@@ -34,4 +29,3 @@ fn main() {
         }
     };
 }
-```
