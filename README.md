@@ -1,4 +1,7 @@
 # http-content-range
+[![Build](https://github.com/nyurik/http-content-range/actions/workflows/ci.yaml/badge.svg)](https://github.com/nyurik/http-content-range/actions/workflows/ci.yaml)
+[![Cr   ates.io](https://img.shields.io/crates/v/http-content-range.svg)](https://crates.io/crates/http-content-range)
+[![Documentation](https://docs.rs/http-content-range/badge.svg)](https://docs.rs/http-content-range)
 
 Tiny Rust lib to decode Content-Range response headers.
 
