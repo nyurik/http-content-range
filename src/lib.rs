@@ -94,11 +94,9 @@ impl ContentRange {
             // Unsatisfied range
             iter.next()?; // consume '*'
             iter.parse_separator(b'/')?;
-            ContentRange::Unsatisfied {
-                0: ContentRangeUnsatisfied {
-                    complete_length: iter.parse_u64()?,
-                },
-            }
+            ContentRange::Unsatisfied(ContentRangeUnsatisfied {
+                complete_length: iter.parse_u64()?,
+            })
         } else {
             // byte range
             let first_byte = iter.parse_u64()?;
@@ -108,22 +106,18 @@ impl ContentRange {
             if iter.parse_separator(b'/')? == b'*' {
                 // unbound byte range, consume '*'
                 iter.next()?;
-                ContentRange::UnboundBytes {
-                    0: ContentRangeUnbound {
-                        first_byte,
-                        last_byte,
-                    },
-                }
+                ContentRange::UnboundBytes(ContentRangeUnbound {
+                    first_byte,
+                    last_byte,
+                })
             } else {
                 let complete_length = iter.parse_u64()?;
                 fail_if(last_byte >= complete_length)?;
-                ContentRange::Bytes {
-                    0: ContentRangeBytes {
-                        first_byte,
-                        last_byte,
-                        complete_length,
-                    },
-                }
+                ContentRange::Bytes(ContentRangeBytes {
+                    first_byte,
+                    last_byte,
+                    complete_length,
+                })
             }
         };
 
