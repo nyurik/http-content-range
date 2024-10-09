@@ -18,13 +18,8 @@ pub fn is_whitespace(c: u8) -> bool {
 }
 
 #[inline]
-fn is_digit(c: u8) -> bool {
-    (b'0'..=b'9').contains(&c)
-}
-
-#[inline]
 fn into_digit(c: u8) -> u64 {
-    (c - b'0') as u64
+    u64::from(c - b'0')
 }
 
 pub(crate) trait IterExt {
@@ -67,11 +62,11 @@ impl IterExt for Peekable<Iter<'_, u8>> {
         let mut res = match self.next() {
             None => return None,
             Some(v) => {
-                if !is_digit(*v) {
+                let c = *v;
+                if !c.is_ascii_digit() {
                     return None;
-                } else {
-                    into_digit(*v)
                 }
+                into_digit(*v)
             }
         };
         loop {
@@ -79,7 +74,7 @@ impl IterExt for Peekable<Iter<'_, u8>> {
                 None => return Some(res),
                 Some(v) => {
                     let next = **v;
-                    if is_digit(next) {
+                    if next.is_ascii_digit() {
                         res = res.checked_mul(10)?.checked_add(into_digit(next))?;
                         self.next();
                     } else {
