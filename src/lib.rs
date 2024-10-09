@@ -15,8 +15,6 @@ pub enum ContentRange {
     UnboundBytes(ContentRangeUnbound),
     /// Server response with status 416
     Unsatisfied(ContentRangeUnsatisfied),
-    /// Header cannot be parsed. This includes non-standard response with status 206
-    Unknown,
 }
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq)]
@@ -47,30 +45,24 @@ impl ContentRange {
     /// See <https://httpwg.org/specs/rfc7233.html#rfc.section.4.2>
     ///
     /// ```
-    /// use http_content_range::{ContentRange, ContentRangeBytes, ContentRangeUnbound, ContentRangeUnsatisfied};
-    /// assert_eq!(ContentRange::parse("bytes 42-69/420"),
+    /// # use http_content_range::{ContentRange, ContentRangeBytes, ContentRangeUnbound, ContentRangeUnsatisfied};
+    /// assert_eq!(ContentRange::parse("bytes 42-69/420").unwrap(),
     ///     ContentRange::Bytes(ContentRangeBytes{first_byte: 42, last_byte: 69, complete_length: 420}));
     ///
     /// // complete_length is unknown
-    /// assert_eq!(ContentRange::parse("bytes 42-69/*"),
+    /// assert_eq!(ContentRange::parse("bytes 42-69/*").unwrap(),
     ///    ContentRange::UnboundBytes(ContentRangeUnbound{first_byte: 42, last_byte: 69}));
     ///
     /// // response is unsatisfied
-    /// assert_eq!(ContentRange::parse("bytes */420"),
+    /// assert_eq!(ContentRange::parse("bytes */420").unwrap(),
     ///   ContentRange::Unsatisfied(ContentRangeUnsatisfied{complete_length: 420}));
     /// ```
     #[must_use]
-    pub fn parse(header: &str) -> ContentRange {
+    #[inline]
+    pub fn parse(header: &str) -> Option<ContentRange> {
         Self::parse_bytes(header.as_bytes())
     }
 
-    /// Same as [`parse`](Self::parse) but parses directly from the byte array
-    #[must_use]
-    pub fn parse_bytes(header: &[u8]) -> ContentRange {
-        Self::parse_opt(header).unwrap_or(ContentRange::Unknown)
-    }
-
-    /// Internal implementation of parsing, easier to return Option midway with `?`.
     /// From <https://httpwg.org/specs/rfc7233.html#rfc.section.4.2>
     /// Valid bytes responses:
     ///   Content-Range: bytes 42-1233/1234
@@ -93,7 +85,9 @@ impl ContentRange {
     ///   other-content-range = other-range-unit SP other-range-resp
     ///   other-range-resp    = *CHAR
     /// ```
-    fn parse_opt(header: &[u8]) -> Option<ContentRange> {
+    /// Same as [`parse`](Self::parse) but parses directly from the byte array
+    #[must_use]
+    pub fn parse_bytes(header: &[u8]) -> Option<ContentRange> {
         if !header.starts_with(PREFIX) {
             return None;
         }
@@ -143,108 +137,71 @@ impl ContentRange {
 
 #[cfg(test)]
 mod tests {
+    #![allow(clippy::unnecessary_wraps)]
+
     use super::*;
 
-    fn new_bytes(first_byte: u64, last_byte: u64, complete_length: u64) -> ContentRange {
-        ContentRange::Bytes(ContentRangeBytes {
+    fn bytes(first_byte: u64, last_byte: u64, complete_length: u64) -> Option<ContentRange> {
+        Some(ContentRange::Bytes(ContentRangeBytes {
             first_byte,
             last_byte,
             complete_length,
-        })
+        }))
     }
 
-    fn new_unbound(first_byte: u64, last_byte: u64) -> ContentRange {
-        ContentRange::UnboundBytes(ContentRangeUnbound {
+    fn unbound(first_byte: u64, last_byte: u64) -> Option<ContentRange> {
+        Some(ContentRange::UnboundBytes(ContentRangeUnbound {
             first_byte,
             last_byte,
-        })
+        }))
     }
 
-    fn new_unsatisfied(complete_length: u64) -> ContentRange {
-        ContentRange::Unsatisfied(ContentRangeUnsatisfied { complete_length })
+    fn unsatisfied(complete_length: u64) -> Option<ContentRange> {
+        Some(ContentRange::Unsatisfied(ContentRangeUnsatisfied {
+            complete_length,
+        }))
     }
 
     #[test]
     fn test_parse() {
-        let tests = vec![
+        for (header, expected) in vec![
             // Valid
-            ("bytes 0-9/20", new_bytes(0, 9, 20)),
-            ("bytes\t 0 \t -\t \t  \t9 / 20   ", new_bytes(0, 9, 20)),
-            ("bytes */20", new_unsatisfied(20)),
-            ("bytes   *\t\t/  20    ", new_unsatisfied(20)),
-            ("bytes 0-9/*", new_unbound(0, 9)),
-            ("bytes   0  -    9  /  *   ", new_unbound(0, 9)),
+            ("bytes 0-9/20", bytes(0, 9, 20)),
+            ("bytes\t 0 \t -\t \t  \t9 / 20   ", bytes(0, 9, 20)),
+            ("bytes */20", unsatisfied(20)),
+            ("bytes   *\t\t/  20    ", unsatisfied(20)),
+            ("bytes 0-9/*", unbound(0, 9)),
+            ("bytes   0  -    9  /  *   ", unbound(0, 9)),
             //
             // Errors
             //
-            ("", ContentRange::Unknown),
-            ("b", ContentRange::Unknown),
-            ("foo", ContentRange::Unknown),
-            ("foo 1-2/3", ContentRange::Unknown),
-            (" bytes 1-2/3", ContentRange::Unknown),
-            ("bytes -2/3", ContentRange::Unknown),
-            ("bytes 1-/3", ContentRange::Unknown),
-            ("bytes 1-2/", ContentRange::Unknown),
-            ("bytes 1-2/a", ContentRange::Unknown),
-            ("bytes1-2/3", ContentRange::Unknown),
-            ("bytes=1-2/3", ContentRange::Unknown),
-            ("bytes a-2/3", ContentRange::Unknown),
-            ("bytes 1-a/3", ContentRange::Unknown),
-            ("bytes 0x01-0x02/3", ContentRange::Unknown),
-            ("bytes 1-2/a", ContentRange::Unknown),
+            ("", None),
+            ("b", None),
+            ("foo", None),
+            ("foo 1-2/3", None),
+            (" bytes 1-2/3", None),
+            ("bytes -2/3", None),
+            ("bytes 1-/3", None),
+            ("bytes 1-2/", None),
+            ("bytes 1-2/a", None),
+            ("bytes1-2/3", None),
+            ("bytes=1-2/3", None),
+            ("bytes a-2/3", None),
+            ("bytes 1-a/3", None),
+            ("bytes 0x01-0x02/3", None),
+            ("bytes 1-2/a", None),
             (
                 "bytes 1111111111111111111111111111111111111111111-2/1",
-                ContentRange::Unknown,
+                None,
             ),
-            ("bytes 1-3/20 1", ContentRange::Unknown),
-            ("bytes 1-3/* 1", ContentRange::Unknown),
-            ("bytes */1 1", ContentRange::Unknown),
-            ("bytes 1-0/20", ContentRange::Unknown),
-            ("bytes 1-20/20", ContentRange::Unknown),
-            ("bytes 1-21/20", ContentRange::Unknown),
-        ];
-
-        for (header, expected) in tests {
-            let res = ContentRange::parse(header);
-
-            match expected {
-                ContentRange::Bytes(expected) => {
-                    if let ContentRange::Bytes(res) = res {
-                        assert_eq!(
-                            res, expected,
-                            "parseContentRange(\"{header}\") = {res:?}, want {expected:?}"
-                        );
-                    } else {
-                        panic!("parseContentRange(\"{header}\") = {res:?}, want {expected:?}");
-                    }
-                }
-                ContentRange::UnboundBytes(expected) => {
-                    if let ContentRange::UnboundBytes(res) = res {
-                        assert_eq!(
-                            res, expected,
-                            "parseContentRange(\"{header}\") = {res:?}, want {expected:?}"
-                        );
-                    } else {
-                        panic!("parseContentRange(\"{header}\") = {res:?}, want {expected:?}");
-                    }
-                }
-                ContentRange::Unsatisfied(expected) => {
-                    if let ContentRange::Unsatisfied(res) = res {
-                        assert_eq!(
-                            res, expected,
-                            "parseContentRange(\"{header}\") = {res:?}, want {expected:?}"
-                        );
-                    } else {
-                        panic!("parseContentRange(\"{header}\") = {res:?}, want {expected:?}");
-                    }
-                }
-                ContentRange::Unknown => {
-                    assert_eq!(
-                        res, expected,
-                        "parseContentRange(\"{header}\") = {res:?}, want {expected:?}"
-                    );
-                }
-            }
+            ("bytes 1-3/20 1", None),
+            ("bytes 1-3/* 1", None),
+            ("bytes */1 1", None),
+            ("bytes 1-0/20", None),
+            ("bytes 1-20/20", None),
+            ("bytes 1-21/20", None),
+        ] {
+            assert_eq!(ContentRange::parse(header), expected);
         }
     }
 }
