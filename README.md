@@ -11,9 +11,9 @@ Tiny Rust lib to decode Content-Range response headers.
 ```rust
 use http_content_range::ContentRange;
 
-let content_range_str = "bytes 42-69/420";
+let value = ContentRange::parse("bytes 42-69/420");
 
-match ContentRange::parse(content_range_str).expect("Failed to parse Content-Range") {
+match value.expect("Failed to parse Content-Range") {
   ContentRange::Bytes(r) => println!(
     "First_byte={}, last_byte={}, complete_length={}",
     r.first_byte, r.last_byte, r.complete_length,
