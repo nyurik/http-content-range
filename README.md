@@ -14,18 +14,24 @@ use http_content_range::ContentRange;
 let value = ContentRange::parse("bytes 42-69/420");
 
 match value.expect("Failed to parse Content-Range") {
-  ContentRange::Bytes(r) => println!(
-    "First_byte={}, last_byte={}, complete_length={}",
-    r.first_byte, r.last_byte, r.complete_length,
-  ),
-  ContentRange::UnboundBytes(r) => println!(
-    "First_byte={}, last_byte={}, complete_length is unknown",
-    r.first_byte, r.last_byte
-  ),
-  ContentRange::Unsatisfied(r) => println!(
-    "Unsatisfied response, complete_length={}",
-    r.complete_length
-  ),
+    ContentRange::Bytes(r) => {
+        println!(
+            "First_byte={}, last_byte={}, complete_length={}",
+            r.first_byte, r.last_byte, r.complete_length,
+        );
+    }
+    ContentRange::UnboundBytes(r) => {
+        println!(
+            "First_byte={}, last_byte={}, complete_length is unknown",
+            r.first_byte, r.last_byte
+        );
+    }
+    ContentRange::Unsatisfied(r) => {
+        println!(
+            "Unsatisfied response, complete_length={}",
+            r.complete_length
+        );
+    }
 };
 ```
 
