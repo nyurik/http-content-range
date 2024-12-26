@@ -14,7 +14,7 @@ update:
 
 # Run cargo clippy
 clippy:
-    cargo clippy --all-targets -- -D warnings
+    cargo clippy --workspace --all-targets -- -D warnings
 
 # Test code formatting
 test-fmt:
@@ -34,7 +34,7 @@ check:
 
 # Run all tests
 test:
-    cargo test
+    RUSTFLAGS='-D warnings' cargo test --workspace --all-targets
 
 # Test documentation
 test-doc:
