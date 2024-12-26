@@ -1,5 +1,7 @@
 #![doc = include_str!("../README.md")]
 
+use std::str::FromStr;
+
 use crate::utils::{fail_if, is_whitespace, IterExt};
 
 mod utils;
@@ -48,6 +50,14 @@ impl TryFrom<&[u8]> for ContentRange {
 
     fn try_from(value: &[u8]) -> Result<Self, Self::Error> {
         Self::parse_bytes(value).ok_or(())
+    }
+}
+
+impl FromStr for ContentRange {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Self::try_from(s)
     }
 }
 
@@ -218,6 +228,9 @@ mod tests {
             ("bytes 1-21/20", None),
         ] {
             assert_eq!(ContentRange::parse(header), expected);
+            assert_eq!(ContentRange::try_from(header).ok(), expected);
+            assert_eq!(ContentRange::from_str(header).ok(), expected);
+            assert_eq!(ContentRange::try_from(header.as_bytes()).ok(), expected);
         }
     }
 }
