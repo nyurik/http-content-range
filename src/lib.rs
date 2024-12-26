@@ -35,6 +35,22 @@ pub struct ContentRangeUnsatisfied {
     pub complete_length: u64,
 }
 
+impl TryFrom<&str> for ContentRange {
+    type Error = ();
+
+    fn try_from(value: &str) -> Result<Self, Self::Error> {
+        Self::parse(value).ok_or(())
+    }
+}
+
+impl TryFrom<&[u8]> for ContentRange {
+    type Error = ();
+
+    fn try_from(value: &[u8]) -> Result<Self, Self::Error> {
+        Self::parse_bytes(value).ok_or(())
+    }
+}
+
 impl ContentRange {
     /// Parses Content-Range HTTP header string as per
     /// [RFC 7233](https://httpwg.org/specs/rfc7233.html#header.content-range).
