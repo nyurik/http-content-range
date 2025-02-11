@@ -8,12 +8,12 @@ edition = "2021"
 license = "MIT OR Apache-2.0"
 keywords = ["http", "headers", "content-range"]
 categories = ["network-programming", "web-programming::http-client"]
-rust-version = "1.58.1"
 exclude = [
     ".gitignore",
     ".github/*",
     "justfile",
 ]
+rust-version = "1.58"
 
 [lints.rust]
 unsafe_code = "forbid"
