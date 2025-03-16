@@ -5,6 +5,7 @@
 [![docs.rs docs](https://docs.rs/http-content-range/badge.svg)](https://docs.rs/http-content-range)
 [![crates.io version](https://img.shields.io/crates/l/http-content-range.svg)](https://github.com/nyurik/http-content-range/blob/main/LICENSE-APACHE)
 [![CI build](https://github.com/nyurik/http-content-range/actions/workflows/ci.yml/badge.svg)](https://github.com/nyurik/http-content-range/actions)
+[![Codecov](https://img.shields.io/codecov/c/github/nyurik/http-content-range)](https://app.codecov.io/gh/nyurik/http-content-range)
 
 Tiny Rust lib to decode Content-Range response headers.
 
