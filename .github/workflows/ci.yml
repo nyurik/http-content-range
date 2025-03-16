@@ -29,9 +29,11 @@ jobs:
       - run: RUST_BACKTRACE=1 just ci-test
       - name: Check semver
         uses: obi1kenobi/cargo-semver-checks-action@v2
-      - name: Generate code coverage
+      - if: github.event_name != 'release' && github.event_name != 'workflow_dispatch'
+        name: Generate code coverage
         run: just ci-coverage
-      - name: Upload coverage to Codecov
+      - if: github.event_name != 'release' && github.event_name != 'workflow_dispatch'
+        name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
