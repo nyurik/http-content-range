@@ -47,7 +47,6 @@ match value.expect("Failed to parse Content-Range") {
 
 The code was inspired by the [rust-http-range](https://github.com/bancek/rust-http-range) crate.
 
-
 ## License
 
 Licensed under either of
