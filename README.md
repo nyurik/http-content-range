@@ -1,10 +1,10 @@
 # http-content-range
 
-[![GitHub](https://img.shields.io/badge/github-nyurik/http--content--range-8da0cb?logo=github)](https://github.com/nyurik/http-content-range)
+[![GitHub repo](https://img.shields.io/badge/github-nyurik/http--content--range-8da0cb?logo=github)](https://github.com/nyurik/http-content-range)
 [![crates.io version](https://img.shields.io/crates/v/http-content-range)](https://crates.io/crates/http-content-range)
-[![docs.rs](https://img.shields.io/docsrs/http-content-range)](https://docs.rs/http-content-range)
-[![license](https://img.shields.io/crates/l/http-content-range)](https://github.com/nyurik/http-content-range/blob/main/LICENSE-APACHE)
-[![CI build](https://github.com/nyurik/http-content-range/actions/workflows/ci.yml/badge.svg)](https://github.com/nyurik/http-content-range/actions)
+[![docs.rs status](https://img.shields.io/docsrs/http-content-range)](https://docs.rs/http-content-range)
+[![crates.io license](https://img.shields.io/crates/l/http-content-range)](https://github.com/nyurik/http-content-range/blob/main/LICENSE-APACHE)
+[![CI build status](https://github.com/nyurik/http-content-range/actions/workflows/ci.yml/badge.svg)](https://github.com/nyurik/http-content-range/actions)
 [![Codecov](https://img.shields.io/codecov/c/github/nyurik/http-content-range)](https://app.codecov.io/gh/nyurik/http-content-range)
 
 Tiny Rust lib to decode Content-Range response headers.
