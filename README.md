@@ -2,6 +2,7 @@
 
 [![GitHub repo](https://img.shields.io/badge/github-nyurik/http--content--range-8da0cb?logo=github)](https://github.com/nyurik/http-content-range)
 [![crates.io version](https://img.shields.io/crates/v/http-content-range)](https://crates.io/crates/http-content-range)
+[![crate usage](https://img.shields.io/crates/d/http-content-range)](https://crates.io/crates/http-content-range)
 [![docs.rs status](https://img.shields.io/docsrs/http-content-range)](https://docs.rs/http-content-range)
 [![crates.io license](https://img.shields.io/crates/l/http-content-range)](https://github.com/nyurik/http-content-range/blob/main/LICENSE-APACHE)
 [![CI build status](https://github.com/nyurik/http-content-range/actions/workflows/ci.yml/badge.svg)](https://github.com/nyurik/http-content-range/actions)
