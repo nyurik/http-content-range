@@ -17,7 +17,7 @@ export RUSTDOCFLAGS := env('RUSTDOCFLAGS', if ci_mode == '1' {'-D warnings'} els
 export RUST_BACKTRACE := env('RUST_BACKTRACE', if ci_mode == '1' {'1'} else {'0'})
 
 @_default:
-    {{just_executable()}} --list
+    {{quote(just_executable())}} --list
 
 # Build the project
 build:
@@ -60,7 +60,7 @@ docs *args='--open':
 env-info:
     @echo "Running for '{{main_crate}}' crate {{if ci_mode == '1' {'in CI mode'} else {'in dev mode'} }} on {{os()}} / {{arch()}}"
     @echo "PWD $(pwd)"
-    {{just_executable()}} --version
+    {{quote(just_executable())}} --version
     rustc --version
     cargo --version
     rustup --version
