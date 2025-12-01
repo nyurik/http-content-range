@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.5](https://github.com/nyurik/http-content-range/compare/v0.2.4...v0.2.5) - 2025-12-01
+
+### Other
+
+- add .editorconfig
+- minor justfile adjustments
+- *(deps)* bump actions/checkout from 5 to 6 in the all-actions-version-updates group ([#27](https://github.com/nyurik/http-content-range/pull/27))
+- minor justfile adjustments
+- build and license cleanup
+
 ## [0.2.4](https://github.com/nyurik/http-content-range/compare/v0.2.3...v0.2.4) - 2025-10-01
 
 ### Other
