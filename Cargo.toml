@@ -7,7 +7,10 @@ repository = "https://github.com/nyurik/http-content-range"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 keywords = ["http", "headers", "content-range"]
-categories = ["network-programming", "web-programming::http-client"]
+categories = [
+    "network-programming",
+    "web-programming::http-client",
+]
 exclude = [".gitignore", ".github/*", "justfile"]
 rust-version = "1.58"
 
