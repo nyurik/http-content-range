@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.5](https://github.com/nyurik/http-content-range/compare/v0.2.4...v0.2.5) - 2026-06-22
+
+### Other
+
+- update .gitignore
+- format justfile
+- *(deps)* bump actions/checkout from 6 to 7 in the all-actions-version-updates group ([#33](https://github.com/nyurik/http-content-range/pull/33))
+- update codecov, justfile, clippy, msrv ([#32](https://github.com/nyurik/http-content-range/pull/32))
+- *(deps)* bump the all-actions-version-updates group across 1 directory with 2 updates ([#31](https://github.com/nyurik/http-content-range/pull/31))
+- *(deps)* bump codecov/codecov-action from 5 to 6 in the all-actions-version-updates group ([#29](https://github.com/nyurik/http-content-range/pull/29))
+- [pre-commit.ci] pre-commit autoupdate ([#28](https://github.com/nyurik/http-content-range/pull/28))
+- add .editorconfig
+- minor justfile adjustments
+- *(deps)* bump actions/checkout from 5 to 6 in the all-actions-version-updates group ([#27](https://github.com/nyurik/http-content-range/pull/27))
+- minor justfile adjustments
+- build and license cleanup
+
 ## [0.2.4](https://github.com/nyurik/http-content-range/compare/v0.2.3...v0.2.4) - 2025-10-01
 
 ### Other
