@@ -35,15 +35,11 @@ impl IterExt for Peekable<Iter<'_, u8>> {
     /// Advances to the next non-blank byte, returning true if there is more data
     fn skip_spaces(&mut self) -> Option<u8> {
         loop {
-            match self.peek() {
-                None => return None,
-                Some(v) => {
-                    if is_whitespace(**v) {
-                        self.next();
-                    } else {
-                        return Some(**v);
-                    }
-                }
+            let v = **self.peek()?;
+            if is_whitespace(v) {
+                self.next();
+            } else {
+                return Some(v);
             }
         }
     }
@@ -59,15 +55,12 @@ impl IterExt for Peekable<Iter<'_, u8>> {
 
     /// Consume u64 value
     fn parse_u64(&mut self) -> Option<u64> {
-        let mut res = match self.next() {
-            None => return None,
-            Some(v) => {
-                let c = *v;
-                if !c.is_ascii_digit() {
-                    return None;
-                }
-                into_digit(*v)
+        let mut res = {
+            let c = *self.next()?;
+            if !c.is_ascii_digit() {
+                return None;
             }
+            into_digit(c)
         };
         loop {
             match self.peek() {
