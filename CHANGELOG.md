@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.6](https://github.com/nyurik/http-content-range/compare/v0.2.5...v0.2.6) - 2026-07-14
+
+### Other
+
+- fix justfile cargo binstall
+- let rust fmt indent .rs files
+- disallow mem leaking in code
+- ignore CARGO_BUILD_WARNINGS in cargo-install
+- use Rust 1.97 cargo warnings
+- clippy fixes ([#34](https://github.com/nyurik/http-content-range/pull/34))
+
 ## [0.2.5](https://github.com/nyurik/http-content-range/compare/v0.2.4...v0.2.5) - 2026-06-22
 
 ### Other
